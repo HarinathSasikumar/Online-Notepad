@@ -80,7 +80,7 @@ npm run install:all
    Open the `.env` file and add your MongoDB connection string:
    ```env
    PORT=5000
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/smartnotes?retryWrites=true&w=majority
+   MONGODB_URI=mongodb+srv://<harisasi:>:<db_password>@cluster0.mongodb.net/smartnotes?retryWrites=true&w=majority
    JWT_SECRET=your_super_secret_jwt_key_here
    NODE_ENV=development
    ```
@@ -201,7 +201,7 @@ smartnotes-pro/
 - ✅ Protected routes with auto-redirect
 - ✅ Session persistence via localStorage
 Contributions, issues, and feature requests are welcome! 
-Feel free to check the [issues page](https://github.com/yourusername/smartnotes-pro/issues).
+Feel free to check the [issues page](https://github.com/HarinathSasikumar/smartnotes-pro/issues).
 ### Notes
 - ✅ Create, Edit, Delete notes
 - ✅ Pin/Unpin important notes
