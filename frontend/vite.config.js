@@ -7,6 +7,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  build: {
+    target: 'es2015',
+  },
   server: {
     port: 5173,
     proxy: {
