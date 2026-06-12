@@ -1,4 +1,4 @@
-﻿import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
 
 const AuthContext = createContext(null);
@@ -11,8 +11,12 @@ export const AuthProvider = ({ children }) => {
   // Initialize auth from localStorage
   useEffect(() => {
     const initAuth = async () => {
-      const token = localStorage.getItem('smartnotes_token');
-      const savedUser = localStorage.getItem('smartnotes_user');
+      let token = null;
+      let savedUser = null;
+      try {
+        token = localStorage.getItem('smartnotes_token');
+        savedUser = localStorage.getItem('smartnotes_user');
+      } catch (e) {}
       if (token && savedUser) {
         try {
           const parsed = JSON.parse(savedUser);
@@ -22,7 +26,9 @@ export const AuthProvider = ({ children }) => {
           const res = await api.get('/auth/me');
           if (res.data.success) {
             setUser(res.data.user);
-            localStorage.setItem('smartnotes_user', JSON.stringify(res.data.user));
+            try {
+              localStorage.setItem('smartnotes_user', JSON.stringify(res.data.user));
+            } catch (e) {}
           }
         } catch (error) {
           logout();
@@ -36,8 +42,10 @@ export const AuthProvider = ({ children }) => {
   const login = useCallback(async (email, password) => {
     const res = await api.post('/auth/login', { email, password });
     const { token, user: userData } = res.data;
-    localStorage.setItem('smartnotes_token', token);
-    localStorage.setItem('smartnotes_user', JSON.stringify(userData));
+    try {
+      localStorage.setItem('smartnotes_token', token);
+      localStorage.setItem('smartnotes_user', JSON.stringify(userData));
+    } catch (e) {}
     setUser(userData);
     setIsAuthenticated(true);
     return res.data;
@@ -46,16 +54,20 @@ export const AuthProvider = ({ children }) => {
   const register = useCallback(async (name, email, password) => {
     const res = await api.post('/auth/register', { name, email, password });
     const { token, user: userData } = res.data;
-    localStorage.setItem('smartnotes_token', token);
-    localStorage.setItem('smartnotes_user', JSON.stringify(userData));
+    try {
+      localStorage.setItem('smartnotes_token', token);
+      localStorage.setItem('smartnotes_user', JSON.stringify(userData));
+    } catch (e) {}
     setUser(userData);
     setIsAuthenticated(true);
     return res.data;
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('smartnotes_token');
-    localStorage.removeItem('smartnotes_user');
+    try {
+      localStorage.removeItem('smartnotes_token');
+      localStorage.removeItem('smartnotes_user');
+    } catch (e) {}
     setUser(null);
     setIsAuthenticated(false);
   }, []);

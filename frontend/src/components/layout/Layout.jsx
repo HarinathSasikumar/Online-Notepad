@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -6,16 +6,22 @@ import Navbar from './Navbar';
 const Layout = ({ onCreateNote }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('smartnotes_dark') === 'true';
+    try {
+      return localStorage.getItem('smartnotes_dark') === 'true';
+    } catch (e) {
+      return false;
+    }
   });
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark-mode');
-    } else {
-      document.documentElement.classList.remove('dark-mode');
-    }
-    localStorage.setItem('smartnotes_dark', darkMode);
+    try {
+      if (darkMode) {
+        document.documentElement.classList.add('dark-mode');
+      } else {
+        document.documentElement.classList.remove('dark-mode');
+      }
+      localStorage.setItem('smartnotes_dark', darkMode);
+    } catch (e) {}
   }, [darkMode]);
 
   return (

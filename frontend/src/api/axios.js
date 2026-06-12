@@ -11,10 +11,12 @@ const api = axios.create({
 // Request interceptor – attach token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('smartnotes_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    try {
+      const token = localStorage.getItem('smartnotes_token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (e) {}
     return config;
   },
   (error) => Promise.reject(error)
@@ -25,8 +27,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('smartnotes_token');
-      localStorage.removeItem('smartnotes_user');
+      try {
+        localStorage.removeItem('smartnotes_token');
+        localStorage.removeItem('smartnotes_user');
+      } catch (e) {}
       window.location.href = '/login';
     }
     return Promise.reject(error);
